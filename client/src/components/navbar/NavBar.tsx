@@ -13,8 +13,12 @@ export default function NavBar () {
                 />
             </span>
         <span className="flex items-center w-[20%] h-full justify-around">
-            <button className="flex text-[20px] text-TextColor">Profile</button>
-            <button className="flex text-[20px] text-TextColor">Courses</button>
+            <button className="flex text-[20px] text-TextColor">
+                Profile
+            </button>
+            <button className="flex text-[20px] text-TextColor">
+                Courses
+            </button>
         </span>
         </div>
     )
