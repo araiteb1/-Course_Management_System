@@ -116,7 +116,7 @@ export default function Profile() {
       </section>
 
 
-      <section className="flex w-[98%] h-[75%] items-center justify-center p-4">
+      <section className="flex w-[98%] h-[85%] items-center justify-center p-3">
         <CoursesList courses={sampleCourses} />
       </section>
     </div>

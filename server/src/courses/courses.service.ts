@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Course, Prisma } from '@prisma/client';
 import * as fs from 'fs';
 import * as path from 'path';
 import { PrismaService } from '../prisma/prisma.service';
@@ -45,6 +45,71 @@ export class CoursesService {
             },
         });
     }
+}
+
+// Get course by title
+async getCourseByTitle(title: string): Promise<Course[] | null> {
+    return this.prisma.course.findMany({
+      where: {
+        title: title,
+      },
+    });
+  }
+
+  // Get courses by instructor name
+  async getCourseByInstructor(instructor: string): Promise<Course[] | null> {
+    return this.prisma.course.findMany({
+      where: {
+        instructor: instructor,
+      },
+    });
+  }
+
+  // Get all courses with pagination
+  async getAllCourses(page: number, limit: number) {
+    const skip = (page - 1) * limit;
+    const courses = await this.prisma.course.findMany({
+      skip: skip,
+      take: limit,
+    });
+
+    const totalCourses = await this.prisma.course.count();
+
+    return {
+      totalCourses,
+      totalPages: Math.ceil(totalCourses / limit),
+      currentPage: page,
+      courses,
+    };
+  }
+  
+  // Add a new course
+  async addCourse(data: {
+    title: string;
+    description: string;
+    instructor: string;
+    schedule: string;
+    creatorEmail: string;
+}): Promise<Course> {
+    const user = await this.prisma.user.findUnique({
+        where: { email: data.creatorEmail },
+    });
+
+    if (!user) {
+        throw new NotFoundException(`User with email ${data.creatorEmail} not found`);
+    }
+
+    return this.prisma.course.create({
+        data: {
+            title: data.title,
+            description: data.description,
+            instructor: data.instructor,
+            schedule: data.schedule,
+            creator: {
+                connect: { id: user.id },
+            },
+        },
+    });
 }
 
 }

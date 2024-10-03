@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
+import { Metadata } from "next";
 import React from "react";
+import { GoogleOAuthProvider } from "@react-oauth/google"; // Import the provider
 import "./style/globals.css";
 import ClientOnlyNavBar from "../components/navbar/ClientOnNavBar"; 
 
@@ -13,16 +14,20 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const clientId = "759524929811-831hssqr6ttossmipnjs7ofd9lpv1fo3.apps.googleusercontent.com";
+
   return (
-    <html lang="en" >
-      <body className="h-screen" >
-        <header className="h-[12%]">
+    <html lang="en">
+      <body className="h-screen w-screen">
+        <GoogleOAuthProvider clientId={clientId}>
+          <header className="h-[13%]">
             <ClientOnlyNavBar />
-        </header>
-        <main className="h-[88%]">
-          {children}
-        </main>
-        </body>
+          </header>
+          <main className="flex w-full h-[85%]">
+            {children}
+          </main>
+        </GoogleOAuthProvider>
+      </body>
     </html>
   );
 }

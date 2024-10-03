@@ -14,7 +14,7 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col md:flex-row w-full h-full p-1 bg-Main">
+        <div className="flex flex-col md:flex-row w-[100%] h-[95%] p-1 bg-Main">
             <div className="w-full md:w-[1500px] h-full">
                 <LoginData register={isRegister} />
             </div>

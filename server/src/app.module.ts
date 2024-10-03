@@ -25,6 +25,6 @@ export class AppModule implements OnModuleInit {
   constructor(private readonly courseService: CoursesService) {}
 
   async onModuleInit() {
-    await this.courseService.loadCoursesFromFile();
+    // await this.courseService.loadCoursesFromFile();
   }
 }
