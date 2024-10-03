@@ -1,7 +1,7 @@
 import React from "react"
 import Image from "next/image"
 
-export default function SideBar () {
+export default function NavBar () {
     return(
         <div className="flex border border-TextColor w-full h-[85%] items-center justify-between bg-white p-3">
             <span className="flex w-[10%] h-full">
