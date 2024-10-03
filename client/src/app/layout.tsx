@@ -14,7 +14,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const clientId = "759524929811-831hssqr6ttossmipnjs7ofd9lpv1fo3.apps.googleusercontent.com";
+  const clientId = "";
 
   return (
     <html lang="en">
