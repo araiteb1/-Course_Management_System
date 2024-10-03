@@ -102,12 +102,7 @@ const sampleCourses = [
 export default function Profile() {
   return (
     <div className="flex flex-col w-full h-full space-y-3">
-
-      <section className="flex w-full h-[10%]">
-        <NavBar />
-      </section>
-
-      <section className="flex w-full h-[10%] items-center justify-around">
+      <section className="flex w-[98%] h-[10%] items-center justify-around">
         <span className="flex w-[50%] h-full items-center space-x-3 p-4 ">
           <Image src="/images/avatar.png" alt="avatar" width={100} height={100} />
           <div className="flex flex-col">
@@ -115,8 +110,8 @@ export default function Profile() {
             <p>EmailEducative@email.com</p>
           </div>
         </span>
-        <span className="flex w-[50%] h-full items-center justify-end p-4 space-x-3">
-          <p>21</p>
+        <span className="flex w-[50%] h-full items-center justify-end p-6 space-x-3">
+          <p>{sampleCourses.length}</p>
           <IconDocu />
         </span>
       </section>

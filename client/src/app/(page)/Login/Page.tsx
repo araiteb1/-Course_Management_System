@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import LoginData from "../../../components/login/LoginData";
 import Image from "next/image";
-import { IconFlesh } from "@/icone/icone";
+import { IconFlesh } from "../../../icone/icone";
 
 const Login: React.FC = () => {
 

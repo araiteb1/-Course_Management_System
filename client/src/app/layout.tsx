@@ -1,7 +1,7 @@
-
 import type { Metadata } from "next";
-import "./style/globals.css";
 import React from "react";
+import "./style/globals.css";
+import ClientOnlyNavBar from "../components/navbar/ClientOnNavBar"; 
 
 export const metadata: Metadata = {
   title: "ClassHive",
@@ -14,10 +14,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="h-screen w-screen">
-        {children}
-      </body>
+    <html lang="en" >
+      <body className="h-screen" >
+        <header className="h-[12%]">
+            <ClientOnlyNavBar />
+        </header>
+        <main className="h-[88%]">
+          {children}
+        </main>
+        </body>
     </html>
   );
 }
