@@ -1,6 +1,5 @@
 "use client"
 import React from "react"
-import NavBar from "../../../components/navbar/NavBar"
 import CoursStatus from "../../../components/courses/CoursStatus"
 
 const StatusCourses = [

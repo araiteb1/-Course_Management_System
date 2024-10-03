@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import NavBar from "../../../components/navbar/NavBar";
 import Image from "next/image";
 import { IconDocu } from "@/icone/icone";
 import CoursesList from "../../../components/courses/CoursList";

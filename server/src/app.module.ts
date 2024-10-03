@@ -1,16 +1,30 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
-import { ProfileService } from './profile/profile.service';
 import { ProfileModule } from './profile/profile.module';
-import { CoursesController } from './courses/courses.controller';
 import { CoursesModule } from './courses/courses.module';
+import { PrismaModule } from './prisma/prisma.module';
+import { CoursesService } from './courses/courses.service';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [AuthModule, ProfileModule, CoursesModule],
-  controllers: [AppController, AuthController, CoursesController],
-  providers: [AppService, ProfileService],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    AuthModule,
+    ProfileModule,
+    CoursesModule,
+    PrismaModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  constructor(private readonly courseService: CoursesService) {}
+
+  async onModuleInit() {
+    await this.courseService.loadCoursesFromFile();
+  }
+}
