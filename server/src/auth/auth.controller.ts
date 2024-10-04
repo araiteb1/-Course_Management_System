@@ -3,9 +3,8 @@ import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
 import { AuthDto, LoginDto } from './dto';
 import { AuthGuard } from '@nestjs/passport';
-import { JwtGuard, JwtSessionGuard } from './guard';
+import { JwtSessionGuard } from './guard';
 import { userData } from './Interfaces/interface';
-import { GetUser } from './decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -18,7 +17,7 @@ export class AuthController {
     }
 
     @Post('register')
-    @UseGuards(JwtSessionGuard)
+    // @UseGuards(JwtSessionGuard)
     register(@Req() req:Request, @Res() res:Response, @Body() dto: AuthDto) {
         return this.authService.register(req, res, dto);        
     }

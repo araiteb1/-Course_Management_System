@@ -7,13 +7,13 @@ export interface userData {
 }
 
 export interface decodedTokenInterface {
-    id: number;
     email: string;
+    firstname: string;
 }
 
 export interface UserToken {
-    id: number;
     email: string;
+    firstname: string;
 }
 
 export interface jwtData {

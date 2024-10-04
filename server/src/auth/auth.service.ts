@@ -45,14 +45,14 @@ export class AuthService {
               });
               res.status(200).cookie('jwt_session', jwtSession, {
                   httpOnly: true,
-                  maxAge: 1000 * 60 * 60 * 24 // expire after 24 hours
+                  maxAge: 1000 * 60 * 60 * 24 
               });
               res.redirect('http://localhost:3000/Profile');
     } else {
       const jwtToken = await this.signToken(userinfo.email, userinfo.firstName);
           res.cookie('jwt_token', jwtToken.access_token, {
           httpOnly: true,
-          maxAge: 1000 * 60 * 60 * 24 // expire after 24 hours
+          maxAge: 1000 * 60 * 60 * 24
       });
       res.redirect('http://localhost:3000/Profile');
           }
@@ -80,7 +80,7 @@ export class AuthService {
       const jwtToken = await this.signToken(user.email, user.firstName);
       res.cookie('jwt_token', jwtToken.access_token, {
         httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 // expire after 24 hours
+        maxAge: 1000 * 60 * 60 * 24 
       });
       res.clearCookie('jwt_session');
       res.status(201).send({ success: true });
@@ -115,7 +115,7 @@ export class AuthService {
                 const token = await this.signToken(user.email, user.firstName);
                 res.cookie('jwt_token', token.access_token, {
                   httpOnly: true,
-                  maxAge: 1000 * 60 * 60 * 24 // expire after 24 hours
+                  maxAge: 1000 * 60 * 60 * 24 
                 });
                 res.status(200).send({ Is2FAenabled: false });
             } else {

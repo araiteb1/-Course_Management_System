@@ -4,11 +4,12 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategy';
 import { GoogleStrategy } from './strategy/auth.strategy.google';
+import { JwtGuard } from './guard';
 
 @Module({
-  imports: [JwtModule.register({}), ],
-  providers: [AuthService, JwtStrategy, GoogleStrategy],
+  imports: [JwtModule.register({secret: process.env.JWT_SECRET}), ],
+  providers: [AuthService, JwtStrategy, GoogleStrategy, JwtService, JwtGuard],
   controllers: [AuthController],
-  exports: [AuthService],
+  exports: [AuthService, JwtGuard],
 })
 export class AuthModule {}

@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import React from "react";
-import { GoogleOAuthProvider } from "@react-oauth/google"; // Import the provider
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import "./style/globals.css";
 import ClientOnlyNavBar from "../components/navbar/ClientOnNavBar"; 
 

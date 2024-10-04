@@ -1,0 +1,16 @@
+FROM node:18
+
+WORKDIR /usr/src/app/server
+
+
+COPY server/package.json server/yarn.lock ./
+
+RUN yarn install
+
+COPY server/ ./
+
+RUN yarn build
+
+EXPOSE 8000
+
+CMD [ "yarn", "start:dev" ]

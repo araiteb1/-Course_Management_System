@@ -1,13 +1,11 @@
-import { ExecutionContext, Injectable } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
-import { AuthGuard } from "@nestjs/passport";
-import { decodedTokenInterface, jwtData, userjwt } from "../Interfaces/interface";
+import { ExecutionContext, Injectable } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { Observable } from 'rxjs';
 import { Request, Response } from 'express';
-import { Observable } from "rxjs";
-import { PrismaService } from "src/prisma/prisma.service";
-import { User } from "@prisma/client";
-
-
+import { JwtService } from '@nestjs/jwt';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { User } from '@prisma/client';
+import { jwtData, userjwt, decodedTokenInterface } from '../Interfaces/Interface';
 @Injectable()
 export class JwtSessionGuard extends AuthGuard('jwt_session') {
   constructor(private jwt: JwtService) {
@@ -40,7 +38,6 @@ export class JwtSessionGuard extends AuthGuard('jwt_session') {
   }
 }
 
-
 @Injectable()
 export class JwtGuard extends AuthGuard('jwt_token') {
   constructor(private jwt: JwtService, private prisma: PrismaService) {
@@ -53,7 +50,7 @@ export class JwtGuard extends AuthGuard('jwt_token') {
       const decoded: decodedTokenInterface = this.jwt.verify(token, { secret });
       const user: userjwt = await this.prisma.user.findUnique({
         where: {
-          email: decoded['email'],
+          id: decoded['id'],
         },
       });
       if (!user) throw new Error('Error: invalid token');
@@ -72,6 +69,48 @@ export class JwtGuard extends AuthGuard('jwt_token') {
     const token: string = req.cookies['jwt_token'];
     if (!token) return false;
     req.body.user = await this.verifyToken(token);
+    if (req.body.user) {
+      return true;
+    } else {
+      return false;
+    }
+    // return this.verifyToken(token);
+  }
+}
+@Injectable()
+export class Jwt2FAGuard extends AuthGuard('jwt_2FA') {
+  constructor(private jwt: JwtService, private prisma: PrismaService) {
+    super();
+  }
+
+  async verifyToken(token: string): Promise<User> {
+    if (!token) return null;
+    const secret: string = process.env.JWT_2FA;
+    try {
+      const decoded: decodedTokenInterface = this.jwt.verify(token, { secret });
+      console.log(decoded);
+      const user: userjwt = await this.prisma.user.findUnique({
+        where: {
+          id: decoded['id'],
+        },
+      });
+      if (!user) throw new Error('Error: invalid token');
+      delete user.password;
+      user.jwt = { exp: decoded['exp'], iat: decoded['iat'] };
+      return user;
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+  }
+
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const req: Request = context.switchToHttp().getRequest();
+    const res: Response = context.switchToHttp().getResponse();
+    const token: string = req.cookies['jwt_2FA'];
+    if (!token) return false;
+    req.body.user = await this.verifyToken(token);
+    console.log(req.body.user);
     if (req.body.user) {
       return true;
     } else {

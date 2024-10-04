@@ -47,7 +47,7 @@ export class CoursesService {
     }
 }
 
-// Get course by title
+
 async getCourseByTitle(title: string): Promise<Course[] | null> {
     return this.prisma.course.findMany({
       where: {
@@ -56,7 +56,6 @@ async getCourseByTitle(title: string): Promise<Course[] | null> {
     });
   }
 
-  // Get courses by instructor name
   async getCourseByInstructor(instructor: string): Promise<Course[] | null> {
     return this.prisma.course.findMany({
       where: {
@@ -65,7 +64,6 @@ async getCourseByTitle(title: string): Promise<Course[] | null> {
     });
   }
 
-  // Get all courses with pagination
   async getAllCourses(page: number, limit: number) {
     const skip = (page - 1) * limit;
     const courses = await this.prisma.course.findMany({
@@ -83,7 +81,7 @@ async getCourseByTitle(title: string): Promise<Course[] | null> {
     };
   }
   
-  // Add a new course
+
   async addCourse(data: {
     title: string;
     description: string;
