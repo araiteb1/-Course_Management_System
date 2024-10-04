@@ -1,8 +1,10 @@
-import { Controller, Get, Param, Res, HttpCode, HttpStatus, Query, Post, Body } from '@nestjs/common';
+import { Controller, Get, Param, Res, HttpCode, HttpStatus, Query, Post, Body, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { CoursesService } from './courses.service';
+import { JwtGuard } from 'src/auth/guard';
 
 @Controller('courses')
+@UseGuards(JwtGuard)
 export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 

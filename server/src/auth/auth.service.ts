@@ -17,43 +17,52 @@ export class AuthService {
     ){}
 
     async googleLogin(user: userData, res: Response) {
-        try {
-            const userinfo = await this.prisma.user.findUnique({
-              where: {
-                email: user.email,
-              },
-              select: {
-                firstName: true,
-                email: true,
-                lastName: true,
-              },
-            });
-            if (!userinfo) {
-                const secret = process.env.JWT_SESSION;
-                const jwtSession = await this.jwt.signAsync(user, {
-                    expiresIn: '1d',
-                    secret: secret,
-                });
-                res.status(200).cookie('jwt_session', jwtSession, {
-                    httpOnly: true,
-                    maxAge: 1000 * 60 * 60 * 24 // expire after 24 hours
-                });
-                res.redirect(process.env.FRONTEND_HOST + '/login');
-      } else {
-        const jwtToken = await this.signToken(userinfo.email, userinfo.firstName);
-            res.cookie('jwt_token', jwtToken.access_token, {
-            httpOnly: true,
-            maxAge: 1000 * 60 * 60 * 24 // expire after 24 hours
-        });
-        res.redirect(process.env.FRONTEND_HOST + '/profile');
-            }
-        }catch (e) {
-            console.log(e);
-            if (e instanceof PrismaClientKnownRequestError) {
-              console.log(`code : ${e.code} ,message : ${e.message}`);
-            }
+      try {
+          const userinfo = await this.prisma.user.findUnique({
+            where: {
+              email: user.email,
+            },
+            select: {
+              firstName: true,
+              email: true,
+              lastName: true,
+            },
+          });
+          if (!userinfo) {
+            const hash = await argon2.hash("password");
+              const userinfo = await this.prisma.user.create({
+                data: {
+                  firstName: user.firstname,
+                  lastName: user.lastname,
+                  email: user.email,
+                  password: hash,
+                },
+              });
+              const secret = process.env.JWT_SESSION;
+              const jwtSession = await this.jwt.signAsync(user, {
+                  expiresIn: '1d',
+                  secret: secret,
+              });
+              res.status(200).cookie('jwt_session', jwtSession, {
+                  httpOnly: true,
+                  maxAge: 1000 * 60 * 60 * 24 // expire after 24 hours
+              });
+              res.redirect('http://localhost:3000/Profile');
+    } else {
+      const jwtToken = await this.signToken(userinfo.email, userinfo.firstName);
+          res.cookie('jwt_token', jwtToken.access_token, {
+          httpOnly: true,
+          maxAge: 1000 * 60 * 60 * 24 // expire after 24 hours
+      });
+      res.redirect('http://localhost:3000/Profile');
           }
-    }
+      }catch (e) {
+          console.log(e);
+          if (e instanceof PrismaClientKnownRequestError) {
+            console.log(`code : ${e.code} ,message : ${e.message}`);
+          }
+        }
+  }
 
     async register(req: Request, res: Response, dto: AuthDto) {
         const secret: string = process.env.JWT_SECRET;
@@ -61,9 +70,9 @@ export class AuthService {
       const hash = await argon2.hash(dto.password);
       const user = await this.prisma.user.create({
         data: {
-          email: dto.email,
           firstName: dto.firstname,
           lastName: dto.lastname,
+          email: dto.email,
           password: hash,
         },
       });
@@ -84,7 +93,6 @@ export class AuthService {
           error = 'An Error has occurred';
         }
       }
-      // error handling for invalid session token
       console.log(e);
       return res.status(401).send(JSON.stringify({ error: error }));
     }

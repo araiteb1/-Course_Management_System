@@ -13,8 +13,8 @@ export class AuthController {
 
     @Get('google-callback')
     @UseGuards(AuthGuard('google'))
-    async AuthGoogle(@GetUser() user: userData, @Req() req:Request, @Res() res:Response) {
-        return this.authService.googleLogin(user, res);
+    async AuthGoogle(@Req() req: Request & { user: userData }, @Res() res: Response) {
+        return this.authService.googleLogin(req.user, res);
     }
 
     @Post('register')
@@ -29,7 +29,7 @@ export class AuthController {
     }
 
     @Post('logout')
-    @UseGuards(JwtGuard)
+    
     logout(@Req() req: Request, @Res() res: Response) {
         return this.authService.logout(req, res);
     }

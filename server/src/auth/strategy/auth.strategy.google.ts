@@ -12,20 +12,19 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
       scope: ['email', 'profile'],
     });
   }
-
   async validate(
     accessToken: string,
     refreshToken: string,
     profile: any,
     done: VerifyCallback,
-  ): Promise<any> {
-    const { name, emails, photos } = profile;
-    const user = {
-      email: emails[0].value,
-      firstName: name.givenName,
-      lastName: name.familyName,
-      accessToken,
-    };
-    done(null, user);
+    ): Promise<any> {
+      const { name, emails, photos } = profile;
+      const user = {
+        firstname: name.givenName,
+        lastname: name.familyName,
+        email: emails[0].value,
+        accessToken,
+      };
+      done(null, user);
   }
 }

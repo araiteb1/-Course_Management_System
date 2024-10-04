@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { IconEmail } from "../../icone/icone";
 import { useRouter } from 'next/navigation';
-import { useGoogleLogin, CodeResponse } from "@react-oauth/google";
+
 
 interface LoginDataProps {
     register: boolean;
@@ -13,9 +13,10 @@ interface LoginDataProps {
 const LoginData: React.FC<LoginDataProps> = ({ register }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
+    const [firstname, setFirstName] = useState("");
+    const [lastname, setLastName] = useState("");
     const router = useRouter();
+   
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -28,16 +29,11 @@ const LoginData: React.FC<LoginDataProps> = ({ register }) => {
             body: JSON.stringify({ email, password }),
         });
 
+        console.log(response)
         if (response.ok) {
-            const data = await response.json();
-            const { access_token } = data;
-
-            if (access_token) {
-                localStorage.setItem("access_token", access_token);
-                router.push("/Profile"); 
-            }
+            router.push("/Profile");
         } else {
-            console.error('Login failed');
+            console.error('login failed');
         }
     };
 
@@ -50,7 +46,7 @@ const LoginData: React.FC<LoginDataProps> = ({ register }) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ firstName, lastName, email, password }),
+            body: JSON.stringify({ firstname, lastname, email, password }),
         });
 
         if (response.ok) {
@@ -59,29 +55,6 @@ const LoginData: React.FC<LoginDataProps> = ({ register }) => {
             console.error('Registration failed');
         }
     };
-
-    const handleSuccess = (codeResponse: CodeResponse) => {
-        const authGoogleEndpoint = "http://localhost:8000/auth/google-callback";
-    
-
-        fetch(authGoogleEndpoint, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ code: codeResponse.code }),
-        })
-        .then((response) => response.json())
-        .then(() => {
-            router.push('/Profile'); 
-        })
-        .catch((err) => {
-            console.error("Error exchanging authorization code:", err);
-        });
-    };
-    
-    const ContinueWithGoogle = useGoogleLogin({
-        onSuccess: handleSuccess,
-        flow: "auth-code", 
-    });
 
 
     if (register) {
@@ -103,7 +76,7 @@ const LoginData: React.FC<LoginDataProps> = ({ register }) => {
                             type="text"
                             className="w-full border rounded p-2"
                             placeholder="Enter your first name"
-                            value={firstName}
+                            value={firstname}
                             onChange={(e) => setFirstName(e.target.value)}
                         />
                     </span>
@@ -113,7 +86,7 @@ const LoginData: React.FC<LoginDataProps> = ({ register }) => {
                             type="text"
                             className="w-full border rounded p-2"
                             placeholder="Enter your last name"
-                            value={lastName}
+                            value={lastname}
                             onChange={(e) => setLastName(e.target.value)}
                         />
                     </span>
