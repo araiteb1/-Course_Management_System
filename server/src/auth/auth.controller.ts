@@ -13,20 +13,20 @@ export class AuthController {
     @Get('google-callback')
     @UseGuards(AuthGuard('google'))
     async AuthGoogle(@Req() req: Request & { user: userData }, @Res() res: Response) {
-        console.log(res)
+        console.log(req)
         return this.authService.googleLogin(req.user, res);
     }
 
     @Post('register')
     // @UseGuards(JwtSessionGuard)
     register(@Req() req:Request, @Res() res:Response, @Body() dto: AuthDto) {
-        console.log(res)
+        console.log(dto)
         return this.authService.register(req, res, dto);        
     }
 
     @Post('login')
     login(@Res() res: Response, @Body() dto: LoginDto) {
-        console.log(res)
+        console.log(dto)
         return this.authService.login(res, dto);
     }
 

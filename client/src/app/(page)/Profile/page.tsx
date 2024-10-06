@@ -8,100 +8,116 @@ import CoursesList from "../../../components/courses/CoursList";
 const sampleCourses = [
   {
     id: 1,
-    name: "Course 1",
+    title: "Course 1",
     description: "Description of Course 1",
+    instructor:"Beth ",
     date: "2024-09-01",
   },
   {
     id: 2,
-    name: "Course 2",
+    title: "Course 2",
     description: "Description of Course 2",
+    instructor:"Beth Williamson",
     date: "2024-09-10",
   },
   {
     id: 3,
-    name: "Course 3",
+    title: "Course 3",
     description: "Description of Course 3",
+    instructor:"Hannah Ward ",
     date: "2024-09-15",
   },
   {
     id: 3,
-    name: "Course 3",
+    title: "Course 3",
     description: "Description of Course 3",
+    instructor:"Beth Williamson",
     date: "2024-09-15",
   },
   {
     id: 3,
-    name: "Course 3",
+    title: "Course 3",
     description: "Description of Course 3",
+    instructor:"Beth Williamson",
     date: "2024-09-15",
   },
   {
     id: 3,
-    name: "Course 3",
+    title: "Course 3",
     description: "Description of Course 3",
+    instructor:"Beth Williamson",
     date: "2024-09-15",
   },
   {
     id: 3,
-    name: "Course 3",
+    title: "Course 3",
     description: "Description of Course 3",
+    instructor:"Beth Williamson",
     date: "2024-09-15",
   },
   {
     id: 3,
-    name: "Course 3",
+    title: "Course 3",
     description: "Description of Course 3",
+    instructor:"Beth Williamson",
     date: "2024-09-15",
   },
   {
     id: 3,
-    name: "Course 3",
+    title: "Course 3",
     description: "Description of Course 3",
+    instructor:"Beth Williamson",
     date: "2024-09-15",
   },
   {
     id: 3,
-    name: "Course 3",
+    title: "Course 3",
     description: "Description of Course 3",
+    instructor:"Beth Williamson",
     date: "2024-09-15",
   },
   {
     id: 3,
-    name: "Course 3",
+    title: "Course 3",
     description: "Description of Course 3",
+    instructor:"Beth Williamson",
     date: "2024-09-15",
   },
   {
     id: 3,
-    name: "Course 3",
+    title: "Course 3",
     description: "Description of Course 3",
+    instructor:"Hannah Ward",
     date: "2024-09-15",
   },
   {
     id: 3,
-    name: "Course 3",
+    title: "Course 3",
     description: "Description of Course 3",
+    instructor:"Charles Lynn",
     date: "2024-09-15",
   },
   {
     id: 3,
-    name: "Course 3",
+    title: "Course 3",
     description: "Description of Course 3",
+    instructor:"Charles Lynn",
     date: "2024-09-15",
   },
   {
     id: 3,
-    name: "Course 3",
+    title: "Course 3",
     description: "Description of Course 3",
+    instructor:"Beth Williamson",
     date: "2024-09-15",
   },
 ];
 
 interface Course {
   id: number;
-  name: string;
+  title: string;
   description: string;
+  instructor:string;
   date: string;
 }
 
@@ -112,19 +128,11 @@ interface UserProfile {
   courses: Course[];
 }
 
-const initialCourses = [
-  {
-    id: 1,
-    name: "Course 1",
-    description: "Description of Course 1",
-    date: "2024-09-01",
-  },
-];
 export default function Profile() {
   const [userData, setUserData] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const [courses, setCourses] = useState(initialCourses);
+  const [courses, setCourses] = useState<Course[]>([]);
 
   const addCourse = (newCourse:Course) => {
     setCourses([...courses, newCourse]); 
@@ -158,9 +166,7 @@ export default function Profile() {
     return <div>Loading...</div>;
   }
 
-  // if (!userData) {
-  //   return <div>Error loading user data</div>;
-  // }
+
   return (
     <div className="flex flex-col w-full h-full space-y-3">
       <section className="flex w-[98%] h-[10%] items-center justify-around">
