@@ -100,6 +100,13 @@ export default function CoursesList({ courses, onAddCourse  }: CoursesListProps)
               className="w-full p-2 my-2 border rounded"
             />
             <input
+              type="text"
+              placeholder="instructor"
+              value={instructor}
+              onChange={(e) => setInstructor(e.target.value)}
+              className="w-full p-2 my-2 border rounded"
+            />
+            <input
               type="date"
               value={courseDate}
               onChange={(e) => setCourseDate(e.target.value)}

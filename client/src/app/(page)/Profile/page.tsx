@@ -154,9 +154,9 @@ export default function Profile() {
     fetchProfile();
   }, []);
 
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   // if (!userData) {
   //   return <div>Error loading user data</div>;

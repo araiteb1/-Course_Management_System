@@ -5,7 +5,8 @@ import { Request, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from '@prisma/client';
-import { jwtData, userjwt, decodedTokenInterface } from '../Interfaces/Interface';
+import { jwtData, userjwt, decodedTokenInterface } from '../interfaces/interface';
+
 @Injectable()
 export class JwtSessionGuard extends AuthGuard('jwt_session') {
   constructor(private jwt: JwtService) {
