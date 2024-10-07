@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { IconFilt } from "../../icone/icone";
-import { Checkbox } from 'pretty-checkbox-react';
 import CoursInfo from "./CoursInfo";
 
 interface Course {
@@ -29,28 +28,28 @@ export default function CoursesList({ courses, onAddCourse }: CoursesListProps) 
   const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
 
   useEffect(() => {
+    const filterCourses = () => {
+      const trimmedSearchTerm = searchTerm.trim().toLowerCase();
+
+      if (trimmedSearchTerm === "") {
+        setFilteredCourses([]);
+        return;
+      }
+
+      const filtered = courses.filter((course) => {
+        if (searchType === "title") {
+          return course.title.toLowerCase().includes(trimmedSearchTerm);
+        } else if (searchType === "instructor") {
+          return course.instructor.toLowerCase().includes(trimmedSearchTerm);
+        }
+        return false;
+      });
+
+      setFilteredCourses(filtered);
+    };
+
     filterCourses();
   }, [searchTerm, searchType, courses]);
-
-  const filterCourses = () => {
-    const trimmedSearchTerm = searchTerm.trim().toLowerCase();
-
-    if (trimmedSearchTerm === "") {
-      setFilteredCourses([]);
-      return;
-    }
-
-    const filtered = courses.filter((course) => {
-      if (searchType === "title") {
-        return course.title.toLowerCase().includes(trimmedSearchTerm);
-      } else if (searchType === "instructor") {
-        return course.instructor.toLowerCase().includes(trimmedSearchTerm);
-      }
-      return false;
-    });
-
-    setFilteredCourses(filtered);
-  };
 
   const handleAddCourse = () => {
     const newCourse: Course = {
@@ -109,8 +108,6 @@ export default function CoursesList({ courses, onAddCourse }: CoursesListProps) 
         </button>
       </div>
 
- 
-
       <div className="flex flex-col w-full h-full overflow-y-auto">
         {!searchTerm && (
           <>
@@ -134,7 +131,6 @@ export default function CoursesList({ courses, onAddCourse }: CoursesListProps) 
           </>
         )}
 
-
         {searchTerm && (
           <>
             <h3 className="p-2 text-center">Filtered Courses</h3>
@@ -151,13 +147,12 @@ export default function CoursesList({ courses, onAddCourse }: CoursesListProps) 
               ))
             ) : (
               <div className="flex items-center justify-center h-full">
-                <p className="text-gray-500">No courses found for "{searchTerm}".</p>
+                <p className="text-gray-500">No courses found for &quot;{searchTerm}&quot;.</p>
               </div>
             )}
           </>
         )}
       </div>
-
 
       {addCourse && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
