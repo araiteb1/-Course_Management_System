@@ -3,9 +3,10 @@ import { AuthGuard } from '@nestjs/passport';
 import { Observable } from 'rxjs';
 import { Request, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
+import { jwtData, decodedTokenInterface, userjwt } from '../Interfaces/Interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from '@prisma/client';
-import { jwtData, userjwt, decodedTokenInterface } from '../interfaces/interface';
+
 
 @Injectable()
 export class JwtSessionGuard extends AuthGuard('jwt_session') {
@@ -33,7 +34,7 @@ export class JwtSessionGuard extends AuthGuard('jwt_session') {
 
     const data: jwtData = this.verifySession(req);
     if (data.authorized) {
-      req.body.user = { jwtDecoded: data.decoded };
+      req.body.staff = { jwtDecoded: data.decoded };
       return true;
     } else return false;
   }
@@ -44,20 +45,22 @@ export class JwtGuard extends AuthGuard('jwt_token') {
   constructor(private jwt: JwtService, private prisma: PrismaService) {
     super();
   }
+
   async verifyToken(token: string): Promise<User> {
+    
     if (!token) return null;
     const secret: string = process.env.JWT_SECRET;
     try {
+   
       const decoded: decodedTokenInterface = this.jwt.verify(token, { secret });
-      const user: userjwt = await this.prisma.user.findUnique({
+      const newUser: userjwt = await this.prisma.user.findUnique({
         where: {
           id: decoded['id'],
         },
       });
-      if (!user) throw new Error('Error: invalid token');
-      delete user.password;
-      user.jwt = { exp: decoded['exp'], iat: decoded['iat'] };
-      return user;
+      if (!newUser) throw new Error('Error: invalid token');
+      newUser.jwt = { exp: decoded['exp'], iat: decoded['iat'] };
+      return newUser;
     } catch (err) {
       console.log(err);
       return null;
@@ -68,51 +71,10 @@ export class JwtGuard extends AuthGuard('jwt_token') {
     const req: Request = context.switchToHttp().getRequest();
     const res: Response = context.switchToHttp().getResponse();
     const token: string = req.cookies['jwt_token'];
+    console.log("---> ",token);
     if (!token) return false;
-    req.body.user = await this.verifyToken(token);
-    if (req.body.user) {
-      return true;
-    } else {
-      return false;
-    }
-    // return this.verifyToken(token);
-  }
-}
-@Injectable()
-export class Jwt2FAGuard extends AuthGuard('jwt_2FA') {
-  constructor(private jwt: JwtService, private prisma: PrismaService) {
-    super();
-  }
-
-  async verifyToken(token: string): Promise<User> {
-    if (!token) return null;
-    const secret: string = process.env.JWT_2FA;
-    try {
-      const decoded: decodedTokenInterface = this.jwt.verify(token, { secret });
-      console.log(decoded);
-      const user: userjwt = await this.prisma.user.findUnique({
-        where: {
-          id: decoded['id'],
-        },
-      });
-      if (!user) throw new Error('Error: invalid token');
-      delete user.password;
-      user.jwt = { exp: decoded['exp'], iat: decoded['iat'] };
-      return user;
-    } catch (err) {
-      console.log(err);
-      return null;
-    }
-  }
-
-  async canActivate(context: ExecutionContext): Promise<boolean> {
-    const req: Request = context.switchToHttp().getRequest();
-    const res: Response = context.switchToHttp().getResponse();
-    const token: string = req.cookies['jwt_2FA'];
-    if (!token) return false;
-    req.body.user = await this.verifyToken(token);
-    console.log(req.body.user);
-    if (req.body.user) {
+    req.body.staff = await this.verifyToken(token);
+    if (req.body.staff) {
       return true;
     } else {
       return false;
