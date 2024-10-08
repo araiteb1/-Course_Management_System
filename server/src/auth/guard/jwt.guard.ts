@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { Observable } from 'rxjs';
 import { Request, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
-import { jwtData, decodedTokenInterface, userjwt } from '../Interfaces/Interface';
+import { jwtData, decodedTokenInterface, userjwt } from '../Interfaces/interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from '@prisma/client';
 
