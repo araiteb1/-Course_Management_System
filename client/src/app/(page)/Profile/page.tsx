@@ -122,9 +122,9 @@ interface Course {
 }
 
 interface UserProfile {
-  id: string;
-  fullName: string;
   email: string;
+  firstName: string;
+  lastName: string;
   courses: Course[];
 }
 
@@ -173,7 +173,7 @@ export default function Profile() {
         <span className="flex w-[50%] h-full items-center space-x-3 p-4 ">
           <Image src="/images/avatar.png" alt="avatar" width={100} height={100} />
           <div className="flex flex-col">
-            <p>{userData?.fullName}</p>
+            <p>{userData?.firstName}{userData?.lastName}</p>
             <p>{userData?.email}</p>
           </div>
         </span>

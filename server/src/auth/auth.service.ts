@@ -57,7 +57,7 @@ export class AuthService {
       res.redirect('http://localhost:3000/Profile');
           }
       }catch (e) {
-          console.log(e);
+          // console.log(e);
           if (e instanceof PrismaClientKnownRequestError) {
             console.log(`code : ${e.code} ,message : ${e.message}`);
           }
@@ -93,7 +93,7 @@ export class AuthService {
           error = 'An Error has occurred';
         }
       }
-      console.log(e);
+      // console.log(e);
       return res.status(401).send(JSON.stringify({ error: error }));
     }
     }
@@ -134,7 +134,7 @@ export class AuthService {
             .clearCookie('jwt_token')
             .json({ success: 'logged out succesfully' });
         } catch (err) {
-          console.log(err);
+          // (err);
           return res.status(401).json({ error: err });
         }
     }

@@ -29,7 +29,7 @@ const LoginData: React.FC<LoginDataProps> = ({ register }) => {
             body: JSON.stringify({ email, password }),
         });
 
-        console.log(response)
+        // console.log(response)
         if (response.ok) {
             router.push("/Profile");
         } else {

@@ -10,10 +10,9 @@ export class ProfileController {
     constructor(private readonly profileService: ProfileService) {}
   
     @Get('me')
-    getProfile(@Req() req: Request & { user: userData }) {
-    console.log("  ===> ",req.user)
-      return (req.user)
-    //   return this.profileService.getProfile(userId);
+    getProfile(@Req() req: Request) {
+      return (req.body.user)
     }
-  }
+}
+
 
